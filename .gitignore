@@ -1,5 +1,9 @@
-# Object file
-*.o
+# Bot Configuration
+config.js
 
-# Ada Library Information
-*.ali
+# Node modules
+node_modules
+package-lock.json
+
+# Mac OS files
+.DS_Store
