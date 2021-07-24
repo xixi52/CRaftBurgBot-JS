@@ -1,0 +1,24 @@
+{
+  "name": "craftburgbot-js",
+  "version": "1.0.0",
+  "description": "The official discord bot for CraftBurg.fr",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "discord-canvas": "^1.4.1",
+    "discord-logs": "^1.9.0",
+    "discord.js": "^12.5.3",
+    "fs": "0.0.1-security",
+    "gifencoder": "^2.0.1",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "prettier": "2.0.2"
+  }
+}
