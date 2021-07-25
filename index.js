@@ -27,6 +27,7 @@ class xiBot extends Client {
     this.emotes = config.emotes;
     this.logger = require("./utils/logger.js");
     this.achievement = require("./utils/achievement.js");
+    this.apiVerif = require("./utils/apiVerif.js");
   }
 
   loadCommand(commandPath, commandName) {

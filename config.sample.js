@@ -1,6 +1,8 @@
 module.exports = {
     token: "",
     maintenance: true,
+    ipServerMC: "",
+    ipLocal: "",
     prefix: "",
     owner: {
         id: "",
@@ -10,7 +12,10 @@ module.exports = {
       host: "",
       user: "",
       password: "",
-      name: "",
+      name: ""
+    },
+    listenPort: {
+        apiVerif: ""
     },
     embed: {
         footer: "",

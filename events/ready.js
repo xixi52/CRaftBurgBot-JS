@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const logs = require("discord-logs");
 const c = require("../config.js");
+const http = require("http");
 
 module.exports = class {
   constructor(client) {
@@ -9,14 +10,17 @@ module.exports = class {
 
   async run() {
     const client = this.client;
-
     logs(client);
+
+
 
     // Logs some informations using the logger file
     client.logger.log(
       `Loading a total of ${client.commands.size} command(s).`,
       "log"
     );
+
+    client.apiVerif(client);
 
     client.logger.log(`${client.user.tag}, ready to serve CraftBurg`, "ready");
 
