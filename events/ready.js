@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
-const logs = require("discord-logs");
-const c = require("../config.js");
+const Discord = require("discord.js"),
+  logs = require("discord-logs"),
+  c = require("../config.js");
 
 module.exports = class {
   constructor(client) {
@@ -10,8 +10,6 @@ module.exports = class {
   async run() {
     const client = this.client;
     logs(client);
-
-
 
     // Logs some informations using the logger file
     client.logger.log(
