@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const logs = require("discord-logs");
 const c = require("../config.js");
-const http = require("http");
 
 module.exports = class {
   constructor(client) {
