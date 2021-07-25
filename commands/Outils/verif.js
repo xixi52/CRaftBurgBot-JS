@@ -11,7 +11,7 @@ class Test extends Command {
       dirname: __dirname,
       enabled: true,
       guildOnly: false,
-      aliases: [],
+      aliases: ["gif"],
       memberPermissions: [],
       botPermissions: ["SEND_MESSAGES"],
       nsfw: false,
