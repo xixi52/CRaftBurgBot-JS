@@ -6,13 +6,35 @@ const { promisify } = require("util"),
   readdir = promisify(fs.readdir),
   config = require("./config.js");
 
-const db = mysql.createConnection({
-  host: config.db.host,
-  user: config.db.user,
-  password: config.db.password,
-  database: config.db.name,
-  charset: "utf8mb4",
-});
+function handleDisconnect() {
+  db = mysql.createConnection({
+    host: config.db.host,
+    user: config.db.user,
+    password: config.db.password,
+    database: config.db.name,
+    charset: "utf8mb4",
+  });
+
+  db.connect(function (err) {
+    if (err) {
+      console.log("error when connecting to db:", err);
+      setTimeout(handleDisconnect, 2000);
+    }
+  });
+
+  db.on("error", function (err) {
+    console.log("db error", err);
+    if (
+      err.code === "PROTOCOL_CONNECTION_LOST" ||
+      err.code === "PROTOCOL_PACKETS_OUT_OF_ORDER"
+    ) {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+handleDisconnect();
 
 // Creates new class
 class xiBot extends Client {
