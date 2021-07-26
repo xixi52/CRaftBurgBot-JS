@@ -50,7 +50,7 @@ module.exports = async function (client) {
             "2️⃣ | Etape finale",
             "Une demande de vérification a été effectuée depuis le compte Minecraft **" + nameMC + " (" + mcUUID + ")** avec la comande `/verif " + verifCode + "`"
           )
-          .addField("ATTENTION!", "Si vous reconnaissez être a l'origine de cette demande répondez par `oui verif` sinon repondez par `non verif`")
+          .addField("ATTENTION!", "Si vous reconnaissez être à l'origine de cette demande répondez par `oui verif` sinon repondez par `non verif`")
           .setFooter("CraftBurg.fr | Fondé par xixi52 avec 🧡")
 
         await userDiscord.send(embed);
