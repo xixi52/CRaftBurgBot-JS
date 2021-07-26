@@ -40,7 +40,6 @@ module.exports = async function (client) {
           if (params[i].split("=")[0] === "mcuuid") mcUUID = tempParam;
         }
 
-        console.log(verifCode);
         const userDiscord = await client.users.fetch(discordID, true, true);
 
         let embed = new Discord.MessageEmbed()
