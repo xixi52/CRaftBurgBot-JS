@@ -91,6 +91,35 @@ module.exports = class {
               );
             }
           }
+          if (message.channel.type === "dm" && userData.verif == 2) {
+            const content = message.content.toLowerCase();
+            if (content === "oui verif" || content === "non verif") {
+              let verifValue, messageVerif;
+              content === "oui verif" ? (verifValue = 3) : (verifValue = 0);
+              await client.db.query(
+                `UPDATE bot_users SET codeVerif = NULL, verif = '${verifValue}' WHERE userID = '${message.author.id}';`,
+                function (err, result, fields) {
+                  if (err) return;
+                }
+              );
+              verifValue == 3
+                ? (messageVerif =
+                    " | Votre compte a été vérifié et lié au compte Minecraft **" +
+                    userData.mcName +
+                    "** (**" +
+                    userData.uuid +
+                    "**) avec succès!")
+                : (messageVerif =
+                    " | La vérification de votre compte a été annulée, pour la reprendre rendez-vous sur le serveur Discord de CraftBurg https://discord.gg/" +
+                    c.invite +
+                    " et entrez la commande `" +
+                    c.prefix +
+                    "verif` dans le salon <#" +
+                    c.channels.commands +
+                    ">");
+              message.author.send(c.emojis.success + messageVerif);
+            }
+          }
         }
       );
       return;

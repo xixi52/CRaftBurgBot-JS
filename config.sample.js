@@ -2,6 +2,7 @@ module.exports = {
     token: "",
     maintenance: true,
     ipServerMC: "",
+    invite: "",
     ipLocal: "",
     prefix: "",
     owner: {
@@ -25,6 +26,9 @@ module.exports = {
         help: "",
         error: "",
         success: ""
+    },
+    channels: {
+        commands: ""
     }
   };
   
