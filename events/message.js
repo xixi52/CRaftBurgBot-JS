@@ -50,45 +50,47 @@ module.exports = class {
               }
             );
           } else {
-            const messages = userData.messages;
-            let total = 0;
-
-            if (messages) {
-              total = Number(messages) + 1;
-              let badge = null;
-              if (total === 100) badge = "bronze";
-              if (total === 1000) badge = "silver";
-              if (total === 2500) badge = "gold";
-              if (total === 10000) badge = "diamond";
-              await client.db.query(
-                `SELECT * FROM \`bot_config\` WHERE id = 1;`,
-                async function (err, result2, fields) {
-                  if (err) throw err;
-                  const string2 = JSON.stringify(result2);
-                  const parse2 = JSON.parse(string2);
-                  const configData = parse2[0];
-                  const channel = configData.rankChannel;
-                  if (channel && badge) {
-                    let desc = "Envoyer " + total + " messages !";
-                    const channel = client.channels.cache.get(
-                      configData.rankChannel
-                    );
-                    await client.achievement(
-                      channel,
-                      "bubble_" + badge,
-                      desc,
-                      message.author
-                    );
+            if(message.channel.type !== "dm") {
+              const messages = userData.messages;
+              let total = 0;
+  
+              if (messages) {
+                total = Number(messages) + 1;
+                let badge = null;
+                if (total === 100) badge = "bronze";
+                if (total === 1000) badge = "silver";
+                if (total === 2500) badge = "gold";
+                if (total === 10000) badge = "diamond";
+                await client.db.query(
+                  `SELECT * FROM \`bot_config\` WHERE id = 1;`,
+                  async function (err, result2, fields) {
+                    if (err) throw err;
+                    const string2 = JSON.stringify(result2);
+                    const parse2 = JSON.parse(string2);
+                    const configData = parse2[0];
+                    const channel = configData.rankChannel;
+                    if (channel && badge) {
+                      let desc = "Envoyer " + total + " messages !";
+                      const channel = client.channels.cache.get(
+                        configData.rankChannel
+                      );
+                      await client.achievement(
+                        channel,
+                        "bubble_" + badge,
+                        desc,
+                        message.author
+                      );
+                    }
                   }
-                }
-              );
-
-              await client.db.query(
-                `UPDATE bot_users SET messages = '${total}' WHERE userID = '${message.author.id}';`,
-                function (err, result, fields) {
-                  if (err) return;
-                }
-              );
+                );
+  
+                await client.db.query(
+                  `UPDATE bot_users SET messages = '${total}' WHERE userID = '${message.author.id}';`,
+                  function (err, result, fields) {
+                    if (err) return;
+                  }
+                );
+              }
             }
           }
           if (message.channel.type === "dm" && userData.verif == 2) {
@@ -248,7 +250,7 @@ module.exports = class {
     }
 
     if (c.maintenance && message.author.id !== client.config.owner.id)
-      return message.channel.send(`${e.error} | xiBot est en maintenance !`);
+      return message.channel.send(`${e.error} | Je suis est en maintenance !`);
 
     let uCooldown = cmdCooldown[message.author.id];
     if (!uCooldown) {
