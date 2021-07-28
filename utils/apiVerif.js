@@ -18,7 +18,7 @@ module.exports = async function (client) {
 
   const server = http.createServer(async function (request, response) {
 
-  if (request.method == "POST") {
+  if (request.method == "POST" && request.connection.remoteAddress === remoteIP) {
       var body = "";
       request.on("data", async function (data) {
         body += data;
