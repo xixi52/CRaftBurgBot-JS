@@ -37,7 +37,7 @@ function handleDisconnect() {
 handleDisconnect();
 
 // Creates new class
-class xiBot extends Client {
+class CraftBurg extends Client {
   constructor(options) {
     super(options);
     this.config = config; // Load config file
@@ -72,6 +72,29 @@ class xiBot extends Client {
     }
   }
 
+  // This function is used to resolve a user from a string
+  async resolveUser(search) {
+    let user = null;
+    if (!search || typeof search !== "string") return;
+    // Try ID search
+    if (search.match(/^<@!?(\d+)>$/)) {
+      let id = search.match(/^<@!?(\d+)>$/)[1];
+      user = this.users.fetch(id).catch((err) => {});
+      if (user) return user;
+    }
+    // Try username search
+    if (search.match(/^!?(\w+)#(\d+)$/)) {
+      let username = search.match(/^!?(\w+)#(\d+)$/)[0];
+      let discriminator = search.match(/^!?(\w+)#(\d+)$/)[1];
+      user = this.users.find(
+        (u) => u.username === username && u.discriminator === discriminator
+      );
+      if (user) return user;
+    }
+    user = await this.users.fetch(search).catch(() => {});
+    return user;
+  }
+
   // This function is used to unload a command (you need to load them again)
   async unloadCommand(commandPath, commandName) {
     let command;
@@ -94,7 +117,7 @@ class xiBot extends Client {
 }
 
 // Creates new client
-const client = new xiBot();
+const client = new CraftBurg();
 
 const init = async () => {
   // Search for all commands
