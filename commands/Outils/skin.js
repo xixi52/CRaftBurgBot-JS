@@ -3,7 +3,7 @@ const Command = require("../../structures/Command.js"),
   fetch = require("node-fetch"),
   Discord = require("discord.js");
 
-const generateEmbed = async (uuid, name, data, m) => {
+const generateEmbed = async (uuid, name, data, m, message) => {
   try {
     // Fetch data from paladium server
     let res = await fetch(
@@ -25,9 +25,13 @@ const generateEmbed = async (uuid, name, data, m) => {
         "Historique des noms d'utilisateur",
         body.map((v) => "• " + v.name).join("\n")
       )
-      .setFooter(data.config.embed.footer)
-      .setColor(data.config.embed.color)
-      .setTimestamp();
+      .setFooter(
+        "Demandé par " +
+          message.author.username +
+          " | CraftBurg.fr | Fondé par xixi52 avec \uD83E\uDDE1",
+        message.author.avatarURL()
+      )
+      .setColor(data.config.embed.color);
 
     m.channel.send(embed);
     return m.delete();
@@ -121,7 +125,7 @@ class Skin extends Command {
               ) {
                 uuid = data.user.uuid;
                 mcName = data.user.mcName;
-                await generateEmbed(uuid, mcName, data, m);
+                await generateEmbed(uuid, mcName, data, m, message);
               } else {
                 return m.edit(
                   e.error +
@@ -173,9 +177,7 @@ class Skin extends Command {
                         );
                       return m.edit(
                         e.error +
-                          " | Veuillez entrer un pseudo Minecraft, un pseudo Discord, ou lier votre compte Minecraft !\nExemple: `" +
-                          client.config.prefix +
-                          "minecraft xixi52`"
+                          " | Ce compte Discord n'a pas lié son compte Minecraft !"
                       );
                     }
                   );
@@ -185,7 +187,8 @@ class Skin extends Command {
                       dataUser.uuid,
                       dataUser.mcName,
                       data,
-                      m
+                      m,
+                      message
                     );
                   } else {
                     return m.edit(
@@ -215,7 +218,7 @@ class Skin extends Command {
                 if (res[0]) {
                   if (!res[0].id || !res[0].name)
                     return m.edit(e.error + " | Une erreur est survenue...");
-                  await generateEmbed(res[0].id, res[0].name, data, m);
+                  await generateEmbed(res[0].id, res[0].name, data, m, message);
                 } else {
                   m.edit(e.error + " | Ce compte Minecraft n'existe pas !");
                 }
