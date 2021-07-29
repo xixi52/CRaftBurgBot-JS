@@ -25,6 +25,7 @@ module.exports = {
     emojis: {
         help: "",
         error: "",
+        loading: "",
         success: ""
     },
     channels: {
