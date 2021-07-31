@@ -133,11 +133,11 @@ class Test extends Command {
           for (let i = 0; i < 14; i++) {
             let img = null;
             if (i < 8) {
-              img = await Canvas.loadImage("./assets/img/verif" + i + "-min.png");
+              img = await Canvas.loadImage("./assets/img/verif/verif" + i + "-min.png");
             } else {
               if (i == 13) encoder.setDelay(3000);
               img = await Canvas.loadImage(
-                "./assets/img/verif" + i + "_" + chars[i - 8] + "-min.png"
+                "./assets/img/verif/verif" + i + "_" + chars[i - 8] + "-min.png"
               );
             }
             ctx.drawImage(img, 0, 0, 303, 48);
