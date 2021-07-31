@@ -30,6 +30,9 @@ module.exports = {
     },
     channels: {
         commands: ""
+    },
+    api: {
+        skin3D: ""
     }
   };
   

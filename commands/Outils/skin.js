@@ -1,7 +1,10 @@
 const Command = require("../../structures/Command.js"),
   request = require("request"),
+  Canvas = require("canvas"),
+  fs = require("fs"),
   fetch = require("node-fetch"),
-  Discord = require("discord.js");
+  Discord = require("discord.js"),
+  GifEncoder = require("gif-encoder");
 
 const generateEmbed = async (uuid, name, data, m, message) => {
   try {
@@ -11,16 +14,104 @@ const generateEmbed = async (uuid, name, data, m, message) => {
       ),
       body = await res.json();
 
+    var gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2);
+
+    // use node-canvas
+    const canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2);
+    const ctx = canvas.getContext("2d");
+
+    // Collect output
+    var file = require("fs").createWriteStream("img.gif");
+    gif.pipe(file);
+    gif.setTransparent(0x000000);
+
+    gif.setRepeat(0);
+    gif.setDelay(150);
+    gif.setQuality(20);
+
+    // Write out the image into memory
+    gif.writeHeader();
+
+    ctx.textAlign = "center";
+
+    m.edit(data.config.emojis.loading + " | Génération du skin 3D - 0%");
+
+    for (let i = 0; i < 180; i += 10) {
+      if (i == 90)
+        m.edit(data.config.emojis.loading + " | Génération du skin 3D - 25%");
+      if (i == 160)
+        m.edit(data.config.emojis.loading + " | Génération du skin 3D - 50%");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let img = await Canvas.loadImage(
+        data.config.api.skin3D +
+          "?user=" +
+          encodeURI(name) +
+          "&hr=" +
+          i +
+          "&aa=true&vrra=20&vrla=-20&vrrl=-20&vrll=20"
+      );
+      ctx.drawImage(
+        img,
+        224 / 2 - img.width / 2 + 50,
+        411 / 2 - img.height / 2 + 25,
+        img.width,
+        img.height
+      );
+      const pixels = ctx.getImageData(0, 0, 224 + 50 * 2, 411 + 25 * 2).data;
+      gif.addFrame(pixels);
+    }
+
+    for (let i = -180; i < 0; i += 10) {
+      if (i == -90)
+        m.edit(data.config.emojis.loading + " | Génération du skin 3D - 75%");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let img = await Canvas.loadImage(
+        data.config.api.skin3D +
+          "?user=" +
+          encodeURI(name) +
+          "&hr=" +
+          i +
+          "&aa=true&vrra=20&vrla=-20&vrrl=-20&vrll=20"
+      );
+      ctx.drawImage(
+        img,
+        224 / 2 - img.width / 2 + 50,
+        411 / 2 - img.height / 2 + 25,
+        img.width,
+        img.height
+      );
+      const pixels = ctx.getImageData(0, 0, 224 + 50 * 2, 411 + 25 * 2).data;
+      gif.addFrame(pixels);
+    }
+
+    // gif.addFrame(pixels); // Write subsequent rgba arrays for more frames
+    gif.finish();
+
+    const attachment = await new Discord.MessageAttachment(
+      "img.gif",
+      "img.gif"
+    );
+
     let embed = new Discord.MessageEmbed()
-      .setAuthor(name, "https://cravatar.eu/avatar/" + name + "/190.png")
+      .setAuthor(
+        name,
+        data.config.api.skin3D +
+          "?user=" +
+          name +
+          "&headOnly=true&hrh=-34.9&vr=0&displayHair=true"
+      )
       .setTitle("Télécharger le skin de " + name + " !")
       .setURL("https://minotar.net/download/" + name)
-      .setThumbnail("https://minotar.net/helm/" + name + "/190.png")
-      .setImage(
-        "https://minecraftskinstealer.com/api/v1/skin/render/fullbody/" +
+      .setThumbnail(
+        data.config.api.skin3D +
+          "?user=" +
           name +
-          "/700"
+          "&headOnly=true&hrh=-34.9&vr=0&displayHair=true"
       )
+      .setImage("attachment://" + "img.gif")
+      .attachFiles(attachment)
       .addField(
         "Historique des noms d'utilisateur",
         body.map((v) => "• " + v.name).join("\n")
@@ -33,7 +124,15 @@ const generateEmbed = async (uuid, name, data, m, message) => {
       )
       .setColor(data.config.embed.color);
 
-    m.channel.send(embed);
+    await m.channel.send(embed);
+    const path = "img.gif";
+
+    try {
+      fs.unlinkSync(path);
+      //file removed
+    } catch (err) {
+      console.error(err);
+    }
     return m.delete();
   } catch (e) {
     return m.edit(data.config.emojis.error + " | Une erreur est survenue...");
