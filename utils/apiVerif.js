@@ -44,7 +44,7 @@ module.exports = async function (client) {
 
         let embed = new Discord.MessageEmbed()
           .setTitle("Vérification de votre compte Minecraft!")
-          .setColor("#FF8A00")
+          .setColor(data.config.embed.color)
           .addField(
             "2️⃣ | Etape finale",
             "Une demande de vérification a été effectuée depuis le compte Minecraft **" + nameMC + " (" + mcUUID + ")** avec la comande `/verif " + verifCode + "`"

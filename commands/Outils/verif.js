@@ -12,6 +12,8 @@ class Verif extends Command {
       enabled: true,
       guildOnly: false,
       aliases: [],
+      examples: "$verif",
+      usage: "verif",
       desc: "Permet de vérifier votre compte Minecraft et de le lier au serveur Discord!",
       memberPermissions: [],
       botPermissions: ["EMBED_LINKS"],
@@ -158,7 +160,7 @@ class Verif extends Command {
 
         let embed1 = new Discord.MessageEmbed()
           .setTitle("Vérification de votre compte Minecraft!")
-          .setColor("#FF8A00")
+          .setColor(data.config.embed.color)
           .addField(
             "✅ | Lancement de la procédure",
             "Bonjour " +
@@ -181,7 +183,7 @@ class Verif extends Command {
 
         let embed = new Discord.MessageEmbed()
           .setTitle("Vérification de votre compte Minecraft!")
-          .setColor("#FF8A00")
+          .setColor(data.config.embed.color)
           .addField(
             "1️⃣ | Etape 1",
             "Pour lancer la procédure de vérification, rendez-vous sur le serveur Minecraft `play.craftburg.fr`et entrez la commande `/verif " +

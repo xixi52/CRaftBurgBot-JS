@@ -26,7 +26,10 @@ module.exports = {
         help: "",
         error: "",
         loading: "",
-        success: ""
+        success: "",
+        categories: {
+            outils: ""
+        }
     },
     channels: {
         commands: ""

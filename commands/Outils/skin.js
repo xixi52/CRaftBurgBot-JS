@@ -163,6 +163,8 @@ class Skin extends Command {
       enabled: true,
       guildOnly: false,
       aliases: [],
+      examples: "$skin xixi52_YT",
+      usage: "skin (tag Discord / pseudo Minecraft)",
       desc: "Affiche les informations et le skin d'un compte Minecraft!",
       memberPermissions: [],
       botPermissions: ["EMBED_LINKS"],
