@@ -35,13 +35,13 @@ class Help extends Command {
       }
 
       // Replace $ caract with the server prefix
-      let examples = cmd.help.examples.replace(/[$_]/g, data.config.prefix);
+      let examples = cmd.help.examples.replace(/[$]/g, data.config.prefix);
 
       // Creates the help embed
       let groupEmbed = new Discord.MessageEmbed()
         .setAuthor("Aide : " + cmd.help.name)
         .addField(e.help + "Utilisation :", data.config.prefix + cmd.help.usage)
-        .addField(e.search + "Exemples :", cmd.help.examples)
+        .addField(e.search + "Exemples :", examples)
         .addField(e.folder + "Groupe :", cmd.help.category)
         .addField(e.desc + "Description :", cmd.help.desc)
         .addField(
