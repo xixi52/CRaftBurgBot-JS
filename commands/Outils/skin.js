@@ -14,17 +14,16 @@ const generateEmbed = async (uuid, name, data, m, message) => {
       ),
       body = await res.json();
 
-    var gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2);
+    const gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2);
 
     // use node-canvas
-    const canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2);
-    const ctx = canvas.getContext("2d");
+    const canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2),
+    ctx = canvas.getContext("2d");
 
     // Collect output
-    var file = require("fs").createWriteStream("img.gif");
+    const file = require("fs").createWriteStream(m.id + ".gif");
     gif.pipe(file);
     gif.setTransparent(0x000000);
-
     gif.setRepeat(0);
     gif.setDelay(150);
     gif.setQuality(20);
@@ -33,6 +32,7 @@ const generateEmbed = async (uuid, name, data, m, message) => {
     gif.writeHeader();
 
     ctx.textAlign = "center";
+
 
     m.edit(data.config.emojis.loading + " | Génération du skin 3D - 0%");
 
@@ -59,6 +59,7 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         img.height
       );
       const pixels = ctx.getImageData(0, 0, 224 + 50 * 2, 411 + 25 * 2).data;
+      console.log(pixels)
       gif.addFrame(pixels);
     }
 
@@ -90,8 +91,8 @@ const generateEmbed = async (uuid, name, data, m, message) => {
     gif.finish();
 
     const attachment = await new Discord.MessageAttachment(
-      "img.gif",
-      "img.gif"
+      m.id + ".gif",
+      m.id + ".gif"
     );
 
     let embed = new Discord.MessageEmbed()
@@ -110,7 +111,7 @@ const generateEmbed = async (uuid, name, data, m, message) => {
           name +
           "&headOnly=true&hrh=-34.9&vr=0&displayHair=true"
       )
-      .setImage("attachment://" + "img.gif")
+      .setImage("attachment://" + m.id + ".gif")
       .attachFiles(attachment)
       .addField(
         "Historique des noms d'utilisateur",
@@ -125,7 +126,7 @@ const generateEmbed = async (uuid, name, data, m, message) => {
       .setColor(data.config.embed.color);
 
     await m.channel.send(embed);
-    const path = "img.gif";
+    const path = m.id + ".gif";
 
     try {
       fs.unlinkSync(path);
@@ -151,7 +152,7 @@ class Skin extends Command {
       botPermissions: ["EMBED_LINKS"],
       nsfw: false,
       ownerOnly: false,
-      cooldown: 5000,
+      cooldown: 40000,
     });
   }
 
