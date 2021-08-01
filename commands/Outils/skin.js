@@ -9,21 +9,21 @@ const Command = require("../../structures/Command.js"),
 const generateEmbed = async (uuid, name, data, m, message) => {
   try {
     // Fetch data from paladium server
-    let res = await fetch(
+    const res = await fetch(
         "https://api.mojang.com/user/profiles/" + uuid + "/names"
       ),
       body = await res.json();
 
-    const gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2);
+    const gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2),
 
     // use node-canvas
-    const canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2),
-    ctx = canvas.getContext("2d");
+    canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2),
+    ctx = canvas.getContext("2d"),
 
     // Collect output
-    const file = require("fs").createWriteStream(m.id + ".gif");
+    file = require("fs").createWriteStream(m.id + ".gif");
     gif.pipe(file);
-    gif.setTransparent(0x000000);
+    gif.setTransparent(0x242E06);
     gif.setRepeat(0);
     gif.setDelay(150);
     gif.setQuality(20);
@@ -43,7 +43,15 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         m.edit(data.config.emojis.loading + " | Génération du skin 3D - 50%");
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let img = await Canvas.loadImage(
+      const background = await Canvas.loadImage("./assets/img/pixels/background-gif.png");
+      ctx.drawImage(
+        background,
+        224 / 2 - background.width / 2 + 50,
+        411 / 2 - background.height / 2 + 25,
+        background.width,
+        background.height
+      );
+      const img = await Canvas.loadImage(
         data.config.api.skin3D +
           "?user=" +
           encodeURI(name) +
@@ -59,7 +67,6 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         img.height
       );
       const pixels = ctx.getImageData(0, 0, 224 + 50 * 2, 411 + 25 * 2).data;
-      console.log(pixels)
       gif.addFrame(pixels);
     }
 
@@ -68,7 +75,15 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         m.edit(data.config.emojis.loading + " | Génération du skin 3D - 75%");
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let img = await Canvas.loadImage(
+      const background = await Canvas.loadImage("./assets/img/pixels/background-gif.png");
+      ctx.drawImage(
+        background,
+        224 / 2 - background.width / 2 + 50,
+        411 / 2 - background.height / 2 + 25,
+        background.width,
+        background.height
+      );
+      const img = await Canvas.loadImage(
         data.config.api.skin3D +
           "?user=" +
           encodeURI(name) +
@@ -197,8 +212,8 @@ class Skin extends Command {
                 return message.channel.send(
                   e.error + " | Une erreur est survenue ! Veuillez réessayer !"
                 );
-              const string = JSON.stringify(result);
-              const parse = JSON.parse(string);
+              const string = JSON.stringify(result),
+              parse = JSON.parse(string);
               data.user = parse[0];
 
               if (!data.user) {
@@ -239,7 +254,7 @@ class Skin extends Command {
         } else {
           let username = args[0];
 
-          let regex = RegExp(
+          const regex = RegExp(
             /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g
           );
 
@@ -247,7 +262,7 @@ class Skin extends Command {
             username = encodeURI(username);
           }
 
-          let user = await client.resolveUser(username, message.guild);
+          const user = await client.resolveUser(username, message.guild);
           if (user) {
             // Check if the user is a bot
             if (user.bot) {
@@ -262,9 +277,9 @@ class Skin extends Command {
                     e.error +
                       " | Une erreur est survenue ! Veuillez réessayer !"
                   );
-                const usersString = JSON.stringify(result);
-                const usersParse = JSON.parse(usersString);
-                const dataUser = usersParse[0];
+                const usersString = JSON.stringify(result),
+                usersParse = JSON.parse(usersString),
+                dataUser = usersParse[0];
 
                 if (!dataUser) {
                   await client.db.query(
@@ -300,9 +315,9 @@ class Skin extends Command {
               }
             );
           } else {
-            let name = encodeURI(args[0]),
+            const name = encodeURI(args[0]),
               nameToUUID = await function (name, cb) {
-                let nameArray = [name];
+                const nameArray = [name];
                 request.post(
                   "https://api.mojang.com/profiles/minecraft",
                   { json: true, body: nameArray },
