@@ -1,17 +1,17 @@
 const Command = require("../../structures/Command.js"),
-  GIFEncoder = require("gifencoder"),
+  GifEncoder = require("gif-encoder"),
   Canvas = require("canvas"),
   Discord = require("discord.js"),
   fs = require("fs");
 
-class Test extends Command {
+class Verif extends Command {
   constructor(client) {
     super(client, {
       name: "verif",
       dirname: __dirname,
       enabled: true,
       guildOnly: false,
-      aliases: ["gif"],
+      aliases: [],
       memberPermissions: [],
       botPermissions: ["SEND_MESSAGES"],
       nsfw: false,
@@ -94,9 +94,9 @@ class Test extends Command {
             async function (err, result, fields) {
               if (err) throw err;
 
-              const string = JSON.stringify(result);
-              const parse = JSON.parse(string);
-              const userData = parse[0];
+              const string = JSON.stringify(result),
+                parse = JSON.parse(string),
+                userData = parse[0];
 
               otherCode = userData;
             }
@@ -112,39 +112,46 @@ class Test extends Command {
           }
         );
 
-        const encoder = new GIFEncoder(303, 48);
-        // stream the results as they are available into myanimated.gif
-        encoder
-          .createReadStream()
-          .pipe(fs.createWriteStream("verif-" + code + ".gif"));
+        const gif = new GifEncoder(303, 48),
+          // Collect output
+          file = require("fs").createWriteStream("verif-" + code + ".gif"),
+          // use node-canvas
+          canvas = Canvas.createCanvas(303, 48),
+          ctx = canvas.getContext("2d");
+        gif.pipe(file);
+        gif.setRepeat(0);
+        gif.setQuality(20);
 
-        encoder.start();
-        encoder.setRepeat(0); // 0 for repeat, -1 for no-repeat
-        encoder.setQuality(10); // image quality. 10 is default.
+        // Write out the image into memory
+        gif.writeHeader();
 
-        // use node-canvas
-        const canvas = Canvas.createCanvas(303, 48);
-        const ctx = canvas.getContext("2d");
-
-        // red rectangle
+        // add frames function
         async function addFrames() {
-          encoder.setDelay(200);
+          gif.setDelay(200);
 
           for (let i = 0; i < 14; i++) {
             let img = null;
             if (i < 8) {
-              img = await Canvas.loadImage("./assets/img/verif/verif" + i + "-min.png");
+              img = await Canvas.loadImage(
+                "./assets/img/verif/verif" + i + "-min.png"
+              );
             } else {
-              if (i == 13) encoder.setDelay(3000);
+              if (i == 13) gif.setDelay(3000);
               img = await Canvas.loadImage(
                 "./assets/img/verif/verif" + i + "_" + chars[i - 8] + "-min.png"
               );
             }
             ctx.drawImage(img, 0, 0, 303, 48);
-            encoder.addFrame(ctx);
+            const pixels = ctx.getImageData(
+              0,
+              0,
+              224 + 50 * 2,
+              411 + 25 * 2
+            ).data;
+            gif.addFrame(pixels);
           }
 
-          await encoder.finish();
+          await gif.finish();
         }
         await addFrames();
 
@@ -199,4 +206,4 @@ class Test extends Command {
   }
 }
 
-module.exports = Test;
+module.exports = Verif;
