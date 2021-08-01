@@ -92,7 +92,12 @@ class Help extends Command {
           "help <commande>` !"
       )
       .setColor(data.config.embed.color)
-      .setFooter(data.config.embed.footer);
+      .setFooter(
+        "Demandé par " +
+          message.author.username +
+          " | CraftBurg.fr | Fondé par xixi52 avec \uD83E\uDDE1",
+        message.author.avatarURL()
+      );
     categories.sort().forEach((cat) => {
       let tCommands = commands.filter((cmd) => cmd.help.category === cat);
       embed.addField(
