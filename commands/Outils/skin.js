@@ -12,18 +12,15 @@ const generateEmbed = async (uuid, name, data, m, message) => {
     const res = await fetch(
         "https://api.mojang.com/user/profiles/" + uuid + "/names"
       ),
-      body = await res.json();
-
-    const gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2),
-
-    // use node-canvas
-    canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2),
-    ctx = canvas.getContext("2d"),
-
-    // Collect output
-    file = require("fs").createWriteStream(m.id + ".gif");
+      body = await res.json(),
+      gif = new GifEncoder(224 + 50 * 2, 411 + 25 * 2),
+      // use node-canvas
+      canvas = Canvas.createCanvas(224 + 50 * 2, 411 + 25 * 2),
+      ctx = canvas.getContext("2d"),
+      // Collect output
+      file = require("fs").createWriteStream(m.id + ".gif");
     gif.pipe(file);
-    gif.setTransparent(0x242E06);
+    gif.setTransparent(0x242e06);
     gif.setRepeat(0);
     gif.setDelay(150);
     gif.setQuality(20);
@@ -32,7 +29,6 @@ const generateEmbed = async (uuid, name, data, m, message) => {
     gif.writeHeader();
 
     ctx.textAlign = "center";
-
 
     m.edit(data.config.emojis.loading + " | Génération du skin 3D - 0%");
 
@@ -43,7 +39,9 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         m.edit(data.config.emojis.loading + " | Génération du skin 3D - 50%");
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const background = await Canvas.loadImage("./assets/img/pixels/background-gif.png");
+      const background = await Canvas.loadImage(
+        "./assets/img/pixels/background-gif.png"
+      );
       ctx.drawImage(
         background,
         224 / 2 - background.width / 2 + 50,
@@ -75,7 +73,9 @@ const generateEmbed = async (uuid, name, data, m, message) => {
         m.edit(data.config.emojis.loading + " | Génération du skin 3D - 75%");
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const background = await Canvas.loadImage("./assets/img/pixels/background-gif.png");
+      const background = await Canvas.loadImage(
+        "./assets/img/pixels/background-gif.png"
+      );
       ctx.drawImage(
         background,
         224 / 2 - background.width / 2 + 50,
@@ -213,7 +213,7 @@ class Skin extends Command {
                   e.error + " | Une erreur est survenue ! Veuillez réessayer !"
                 );
               const string = JSON.stringify(result),
-              parse = JSON.parse(string);
+                parse = JSON.parse(string);
               data.user = parse[0];
 
               if (!data.user) {
@@ -278,8 +278,8 @@ class Skin extends Command {
                       " | Une erreur est survenue ! Veuillez réessayer !"
                   );
                 const usersString = JSON.stringify(result),
-                usersParse = JSON.parse(usersString),
-                dataUser = usersParse[0];
+                  usersParse = JSON.parse(usersString),
+                  dataUser = usersParse[0];
 
                 if (!dataUser) {
                   await client.db.query(
