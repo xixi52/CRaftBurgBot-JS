@@ -163,6 +163,7 @@ class Skin extends Command {
       enabled: true,
       guildOnly: false,
       aliases: [],
+      desc: "Affiche les informations et le skin d'un compte Minecraft!",
       memberPermissions: [],
       botPermissions: ["EMBED_LINKS"],
       nsfw: false,

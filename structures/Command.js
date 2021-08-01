@@ -9,6 +9,7 @@ module.exports = class Command {
       enabled = true,
       guildOnly = false,
       aliases = new Array(),
+      desc = null,
       botPermissions = new Array(),
       memberPermissions = new Array(),
       nsfw = false,
@@ -32,6 +33,6 @@ module.exports = class Command {
       ownerOnly,
       cooldown,
     };
-    this.help = { name, category };
+    this.help = { name, desc, category };
   }
 };
