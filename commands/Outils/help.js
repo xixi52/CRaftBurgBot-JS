@@ -40,18 +40,18 @@ class Help extends Command {
       // Creates the help embed
       let groupEmbed = new Discord.MessageEmbed()
         .setAuthor("Aide : " + cmd.help.name)
-        .addField(e.help + "Utilisation :", data.config.prefix + cmd.help.usage)
-        .addField(e.search + "Exemples :", examples)
-        .addField(e.folder + "Groupe :", cmd.help.category)
-        .addField(e.desc + "Description :", cmd.help.desc)
+        .addField(e.help + " Utilisation :", data.config.prefix + cmd.help.usage)
+        .addField(e.search + " Exemples :", examples)
+        .addField(e.folder + " Groupe :", cmd.help.category)
+        .addField(e.desc + " Description :", cmd.help.desc)
         .addField(
-          e.add + "Alias :",
+          e.add + " Alias :",
           cmd.conf.aliases.length > 0
             ? cmd.conf.aliases.map((a) => "`" + a + "`").join("\n")
             : "Aucun alias."
         )
         .addField(
-          e.crown + "Permissions :",
+          e.crown + " Permissions :",
           cmd.conf.ownerOnly
             ? "`OWNER`"
             : cmd.conf.memberPermissions.length > 0

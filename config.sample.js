@@ -24,6 +24,11 @@ module.exports = {
     },
     emojis: {
         help: "",
+        search: "",
+        folder: "",
+        desc: "",
+        add: "",
+        crown: "",
         error: "",
         loading: "",
         success: "",
