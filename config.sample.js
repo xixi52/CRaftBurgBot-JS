@@ -33,7 +33,8 @@ module.exports = {
         loading: "",
         success: "",
         categories: {
-            outils: ""
+            outils: "",
+            minecraft: ""
         }
     },
     channels: {
