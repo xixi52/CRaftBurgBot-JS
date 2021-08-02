@@ -111,21 +111,10 @@ const generateEmbed = async (uuid, name, data, m, message) => {
     );
 
     let embed = new Discord.MessageEmbed()
-      .setAuthor(
-        name,
-        data.config.api.skin3D +
-          "?user=" +
-          name +
-          "&headOnly=true&hrh=-34.9&vr=0&displayHair=true"
-      )
+      .setAuthor(name, "https://minotar.net/helm/" + name + "/190.png")
       .setTitle("Télécharger le skin de " + name + " !")
       .setURL("https://minotar.net/download/" + name)
-      .setThumbnail(
-        data.config.api.skin3D +
-          "?user=" +
-          name +
-          "&headOnly=true&hrh=-34.9&vr=0&displayHair=true"
-      )
+      .setThumbnail("https://minotar.net/helm/" + name + "/190.png")
       .setImage("attachment://" + m.id + ".gif")
       .attachFiles(attachment)
       .addField(
